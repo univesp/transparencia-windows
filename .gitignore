@@ -1,0 +1,30 @@
+# Build results
+bin/
+obj/
+*.exe
+*.dll
+
+# User-specific files
+*.user
+*.suo
+*.tmp
+*.userosscache
+*.userprefs
+
+# Visual Studio working files
+.vscode/
+.idea/
+*.vcxproj.user
+*.vs/
+*.ncrunchproject
+
+# Package directories
+packages/
+*.nupkg
+
+# Logs and debug files
+*.log
+
+# Publish outputs
+PublishOutput/
+*.Publish.xml
