@@ -27,8 +27,15 @@ namespace TransparenciaWindows
             {
                 if (dialogo.ShowDialog() == DialogResult.OK)
                 {
-                    _planilhaMensal = new StreamReader(dialogo.FileName);
-                    MessageBox.Show("Planilha mensal carregada");
+                    try
+                    {
+                        _planilhaMensal = new StreamReader(dialogo.FileName);
+                        MessageBox.Show("Planilha mensal carregada");
+                    } 
+                    catch (IOException ex)
+                    {
+                        MessageBox.Show("Erro ao abrir a planilha; verifique se ela não está aberta em sua máquina.");
+                    }
                 }
             }
         }
