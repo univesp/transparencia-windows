@@ -16,24 +16,66 @@ namespace TransparenciaWindows.Services
                 var dadosEncargos = ConverterDadosEncargos(ds.Tables[1]);
                 var dadosPessoais = ConverterDadosPessoais(ds.Tables[2]);
                 var dadosFinanceiros = ConverterDadosFinanceiros(ds.Tables[3]);
-                var dadosCargos = ConverterDadosCargos(ds.Tables[4]);
+                var dadosCargos = ConverterDadosCargos(ds.Tables[4]);                
                 var dadosVencimentos = ConverterDadosVencimentos(ds.Tables[5]);
-                var dadosUnidades = ConverterDadosUnidades(ds.Tables[6]);
+                var dadosFaixas = ConverterDadosFaixas(ds.Tables[6]);
+                var dadosUnidades = ConverterDadosUnidades(ds.Tables[7]);
+                var dadosCabecalho = ConverterDadosCabecalho(ds.Tables, 
+                    dadosPessoais.Item2, dadosPessoais.Item3, dadosPessoais.Item4);
 
                 string baseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Outputs");
                 string filePath = Path.Combine(baseDirectory, "portal.txt");
 
                 using (StreamWriter saida = new StreamWriter(filePath))
                 {
+                    saida.Write(dadosCabecalho);
                     saida.Write(dadosEncargos);
-                    saida.Write(dadosPessoais);
+                    saida.Write(dadosPessoais.Item1);
                     saida.Write(dadosFinanceiros);
                     saida.Write(dadosCargos);
                     saida.Write(dadosVencimentos);
+                    saida.Write(dadosFaixas);
                     saida.Write(dadosUnidades);
                     MessageBox.Show("Arquivo gerado com sucesso!");
                 }
             }
+        }
+
+        private static String ConverterDadosCabecalho(DataTableCollection abas, 
+            int totalBruto, int totalDescontos, int totalLiquido)
+        {
+            DataRow registro = abas[0].Rows[1];
+
+            int totalRegistros = (abas[1].Rows.Count - 1) +
+                 (abas[2].Rows.Count - 1) +
+                 (abas[3].Rows.Count - 1) +
+                 (abas[4].Rows.Count - 1) +
+                 (abas[5].Rows.Count - 1) +
+                 (abas[6].Rows.Count - 1) +
+                 (abas[7].Rows.Count - 1);            
+
+            string linhaFormatada = "";
+            linhaFormatada += "".PadRight(9); /* [A] C 09 */
+            linhaFormatada += $"{registro[1]}".Trim().PadLeft(2,'0'); /* [B] Z 02 */
+            linhaFormatada += $"{registro[2]}".Trim().PadLeft(3,'0'); /* [C] Z 03 */
+            linhaFormatada += "".PadRight(33); /* [D] C 33 */
+            linhaFormatada += $"{registro[4]}".Trim().PadLeft(6,'0'); /* [E] Z 06 */
+            linhaFormatada += $"{totalRegistros}".PadLeft(11,'0'); /* [F] Z 11 */
+            linhaFormatada += $"{(abas[2].Rows.Count - 1)}".PadLeft(11,'0'); /* [G] Z 11 */
+            linhaFormatada += $"{(abas[3].Rows.Count - 1)}".PadLeft(11,'0'); /* [H] Z 11 */
+            linhaFormatada += $"{(abas[4].Rows.Count - 1)}".PadLeft(11,'0'); /* [I] Z 11 */
+            linhaFormatada += "".PadRight(11); /* [J] C 11 */
+            linhaFormatada += $"{(abas[5].Rows.Count - 1)}".PadLeft(11,'0'); /* [K] Z 11 */
+            linhaFormatada += $"{(abas[6].Rows.Count - 1)}".PadLeft(11,'0'); /* [L] Z 11 */
+            linhaFormatada += $"{totalBruto}".PadLeft(15,'0'); /* [M] Z 15 */
+            linhaFormatada += $"{totalDescontos}".PadLeft(15,'0'); /* [N] Z 15 */
+            linhaFormatada += $"{totalLiquido}".PadLeft(15,'0'); /* [N] Z 15 */
+            linhaFormatada += $"{(abas[1].Rows.Count)}".PadLeft(11, '0'); /* [O] Z 11 */
+            linhaFormatada += $"{totalRegistros}".PadLeft(11,'0'); /* [P] Z 11 */
+            linhaFormatada += "".PadRight(552); /* [Q] C 553 */
+            linhaFormatada += "\n";
+
+            return linhaFormatada;
         }
 
         private static String ConverterDadosEncargos(DataTable aba)
@@ -118,9 +160,13 @@ namespace TransparenciaWindows.Services
 
         }
 
-        private static String ConverterDadosPessoais(DataTable aba)
+        private static (string, int, int, int) ConverterDadosPessoais(DataTable aba)
         {
             string conteudo = "";
+            int totalBruto = 0;
+            int totalLiquido = 0;
+            int totalDescontos = 0;
+
             for (int i = 1; i < aba.Rows.Count; i++)
             {
                 DataRow registro = aba.Rows[i];
@@ -258,8 +304,26 @@ namespace TransparenciaWindows.Services
                 linhaFormatada += $"{registro[129]}".Trim().PadLeft( 5, '0');/* [DZ] Z 05 */
                 linhaFormatada += $"{registro[130]}".Split(' ')[0].Trim().PadLeft(3,'0'); /* [EA] Z 03 */
                 linhaFormatada += $"{registro[131]}".Trim().PadLeft( 13, '0');/* [EB] Z 13  */
+
+                if (int.TryParse($"{registro[131]}".Trim(), out int tryTotalBruto))
+                {
+                    totalBruto += tryTotalBruto;
+                }
+
                 linhaFormatada += $"{registro[132]}".Trim().PadLeft( 13, '0'); /* [EC] Z 13 */
+
+                if (int.TryParse($"{registro[132]}".Trim(), out int tryTotalDescontos))
+                {
+                    totalDescontos += tryTotalDescontos;
+                }               
+
                 linhaFormatada += $"{registro[133]}".Trim().PadLeft( 13, '0'); /* [ED] Z 13 */
+
+                if (int.TryParse($"{registro[133]}".Trim(), out int tryTotalLiquido))
+                {
+                    totalLiquido += tryTotalLiquido;
+                }
+
                 linhaFormatada += $"{registro[134]}".Split(' ')[0].Trim().PadRight(2); /* [EE] C 02 */
                 linhaFormatada += $"{registro[135]}".Trim().PadRight(1); /* [EF] C 01 */
                 linhaFormatada += $"{registro[136]}".Trim().PadLeft( 7, '0'); /* [EG] Z 07 */
@@ -270,9 +334,9 @@ namespace TransparenciaWindows.Services
                 linhaFormatada += "".PadRight(2); /* [EL] C 03 */
   
                 conteudo += $"{linhaFormatada}\n";
-            }
-         
-            return conteudo;
+            }          
+
+            return (conteudo, totalBruto, totalDescontos, totalLiquido);
         }
 
         private static String ConverterDadosFinanceiros(DataTable aba)
