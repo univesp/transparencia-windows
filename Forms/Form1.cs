@@ -42,14 +42,20 @@ namespace TransparenciaWindows
 
         private void btnConverter_Click(object sender, EventArgs e)
         {
-            if (_planilhaMensal != null)
+            var opcaoEscolhida = cbxTipoArquivo.SelectedItem;
+            if (opcaoEscolhida == null)
             {
-                PortalService.ConverterParaTXT(_planilhaMensal.BaseStream);                           
-            }
-            else
+                MessageBox.Show("Selecione o tipo de arquivo a ser gerado");
+            } else
             {
-                MessageBox.Show("Planilha mensal NÃO CARREGADA");
-            }
+                if (_planilhaMensal != null)
+                {
+                    FacadeService.Converter(opcaoEscolhida.ToString(), _planilhaMensal);
+                } else
+                {
+                    MessageBox.Show("Planilha mensal NÃO CARREGADA");
+                }
+            };
         }
     }
 }
