@@ -128,6 +128,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AudespService.cs" />
+    <Compile Include="Services\ContabilidadeService.cs" />
     <Compile Include="Services\FacadeService.cs" />
     <Compile Include="Services\IamspeService.cs" />
     <Compile Include="Services\MesclagemService.cs" />

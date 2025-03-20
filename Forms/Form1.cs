@@ -87,7 +87,7 @@ namespace TransparenciaWindows
             {
                 if (_planilhaMensal != null)
                 {
-                    FacadeService.Converter(opcaoEscolhida.ToString(), _planilhaMensal);
+                    FacadeService.Converter(opcaoEscolhida.ToString(), _planilhaMensal.BaseStream, _planilhaContabilidade.BaseStream);
                 } else
                 {
                     MessageBox.Show("Planilha mensal NÃO CARREGADA");

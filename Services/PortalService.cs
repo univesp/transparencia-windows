@@ -9,37 +9,34 @@ namespace TransparenciaWindows.Services
 {
     public class PortalService
     {
-        public static void ConverterParaTXT(Stream dadosPlanilha)
-        {
-            using (var planilha = ExcelReaderFactory.CreateReader(dadosPlanilha))
+        public static void ConverterParaTXT(IExcelDataReader planilha)
+        {        
+            var ds = planilha.AsDataSet();
+            var dadosEncargos = ConverterDadosEncargos(ds.Tables[1]);
+            var dadosPessoais = ConverterDadosPessoais(ds.Tables[2]);
+            var dadosFinanceiros = ConverterDadosFinanceiros(ds.Tables[3]);
+            var dadosCargos = ConverterDadosCargos(ds.Tables[4]);                
+            var dadosVencimentos = ConverterDadosVencimentos(ds.Tables[5]);
+            var dadosFaixas = ConverterDadosFaixas(ds.Tables[6]);
+            var dadosUnidades = ConverterDadosUnidades(ds.Tables[7]);
+            var dadosCabecalho = ConverterDadosCabecalho(ds.Tables, 
+                dadosPessoais.Item2, dadosPessoais.Item3, dadosPessoais.Item4);
+
+            string baseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Outputs");
+            string filePath = Path.Combine(baseDirectory, "portal.txt");
+
+            using (StreamWriter saida = new StreamWriter(filePath))
             {
-                var ds = planilha.AsDataSet();
-                var dadosEncargos = ConverterDadosEncargos(ds.Tables[1]);
-                var dadosPessoais = ConverterDadosPessoais(ds.Tables[2]);
-                var dadosFinanceiros = ConverterDadosFinanceiros(ds.Tables[3]);
-                var dadosCargos = ConverterDadosCargos(ds.Tables[4]);                
-                var dadosVencimentos = ConverterDadosVencimentos(ds.Tables[5]);
-                var dadosFaixas = ConverterDadosFaixas(ds.Tables[6]);
-                var dadosUnidades = ConverterDadosUnidades(ds.Tables[7]);
-                var dadosCabecalho = ConverterDadosCabecalho(ds.Tables, 
-                    dadosPessoais.Item2, dadosPessoais.Item3, dadosPessoais.Item4);
-
-                string baseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Outputs");
-                string filePath = Path.Combine(baseDirectory, "portal.txt");
-
-                using (StreamWriter saida = new StreamWriter(filePath))
-                {
-                    saida.Write(dadosCabecalho);
-                    saida.Write(dadosEncargos);
-                    saida.Write(dadosPessoais.Item1);
-                    saida.Write(dadosFinanceiros);
-                    saida.Write(dadosCargos);
-                    saida.Write(dadosVencimentos);
-                    saida.Write(dadosFaixas);
-                    saida.Write(dadosUnidades);
-                    MessageBox.Show("Arquivo gerado com sucesso!");
-                }
-            }
+                saida.Write(dadosCabecalho);
+                saida.Write(dadosEncargos);
+                saida.Write(dadosPessoais.Item1);
+                saida.Write(dadosFinanceiros);
+                saida.Write(dadosCargos);
+                saida.Write(dadosVencimentos);
+                saida.Write(dadosFaixas);
+                saida.Write(dadosUnidades);
+                MessageBox.Show("Arquivo gerado com sucesso!");
+            }            
         }
 
         private static String ConverterDadosCabecalho(DataTableCollection abas, 

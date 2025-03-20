@@ -18,24 +18,21 @@ namespace TransparenciaWindows.Services
         private const string IdentUO = "46";
         private const string IdentUD = "30";
 
-        public static void ConverterParaTXT(Stream dadosPlanilha)
+        public static void ConverterParaTXT(IExcelDataReader planilha)
         {
             MessageBox.Show("Convertendo para TXT IAMSPE");
+           
+            var ds = planilha.AsDataSet();                
+            var dadosPessoais = ConverterDadosPessoais(ds.Tables[2]);
 
-            using (var planilha = ExcelReaderFactory.CreateReader(dadosPlanilha))
-            {
-                var ds = planilha.AsDataSet();                
-                var dadosPessoais = ConverterDadosPessoais(ds.Tables[2]);
+            string baseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Outputs");
+            string filePath = Path.Combine(baseDirectory, "iamspe.txt");
 
-                string baseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Outputs");
-                string filePath = Path.Combine(baseDirectory, "iamspe.txt");
-
-                using (StreamWriter saida = new StreamWriter(filePath))
-                {                 
-                    saida.Write(dadosPessoais);                 
-                    MessageBox.Show("Arquivo gerado com sucesso!");
-                }
-            }
+            using (StreamWriter saida = new StreamWriter(filePath))
+            {                 
+                saida.Write(dadosPessoais);                 
+                MessageBox.Show("Arquivo gerado com sucesso!");
+            }            
         }
 
         private static string ConverterDadosPessoais(DataTable aba)
