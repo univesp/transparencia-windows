@@ -67,7 +67,6 @@ namespace TransparenciaWindows.Services
                 string templateAgente = File.ReadAllText(Path.Combine(diretorioBaseTemplates, "Fragmentos", "AgentePublico.txt"));
                 string templateVerbas = File.ReadAllText(Path.Combine(diretorioBaseTemplates, "Fragmentos", "Verbas.txt"));
 
-
                 List<Financeiro> listaFinanceiro = new List<Financeiro>();
 
                 var ds = planilha.AsDataSet();
@@ -203,10 +202,73 @@ namespace TransparenciaWindows.Services
 
         #endregion
 
+        #region XML Pagamento Folha
+
         public static void ConverterParaXMLPagamentoFolha(Stream dadosPlanilha)
         {
             MessageBox.Show("Convertendo para XML - Pagamento Folha");
+
+            string diretorioBaseTemplates = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Templates\AUDESP");
+            string diretorioBaseSaida = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Outputs");
+
+            using (var planilha = ExcelReaderFactory.CreateReader(dadosPlanilha))
+            {
+                // Leitura dos arquivos de template da AUDESP
+                string templatePagamentoFolha = File.ReadAllText(Path.Combine(diretorioBaseTemplates, "PagamentoFolha.txt"));
+                string templateAgente = File.ReadAllText(Path.Combine(diretorioBaseTemplates, "Fragmentos", "AgenteFolha.txt"));
+
+                string agentes = "";
+
+                var ds = planilha.AsDataSet();
+                var abaPessoal = ds.Tables[2];
+                for (int i = 1; i < abaPessoal.Rows.Count; i++)
+                {
+                    DataRow registroPessoal = abaPessoal.Rows[i];
+
+                    // pula a linha se o campo "AUDESP - considerar" (coluna FG) estiver com o valor "2 - NÃO"
+                    if ($"{registroPessoal[162]}".Split('-')[0].Trim() == "2")
+                    {
+                        continue;
+                    }
+
+                    float.TryParse($"{registroPessoal[160]}", out float pagoCC);
+                    float.TryParse($"{registroPessoal[161]}", out float pagoOutros);
+
+                    agentes += templateAgente
+                                .Replace("[CPF]", MontarCPF(registroPessoal))
+                                .Replace("[CODIGO_CARGO]", $"{registroPessoal[45]}".Trim())
+                                .Replace("[FORMA_PAGAMENTO]", "")
+                                .Replace("[NUMERO_BANCO]", $"{registroPessoal[157]}".Trim())
+                                .Replace("[AGENCIA]", $"{registroPessoal[158]}".Trim())
+                                .Replace("[CONTA_CORRENTE]", $"{registroPessoal[159]}".Trim())
+                                .Replace("[PAGO_CC]", DeFloatParaTexto(pagoCC))
+                                .Replace("[PAGO_OUTROS]", DeFloatParaTexto(pagoOutros))
+                                .Replace("[MUNICIPIO]", Municipio)
+                                .Replace("[ENTIDADE]", Entidade);
+                }
+
+                var abaCabecalho = ds.Tables[0];
+                DataRow registroCabecalho = abaCabecalho.Rows[1];
+
+                string templateFinal = templatePagamentoFolha
+                                        .Replace("[MUNICIPIO]", Municipio)
+                                        .Replace("[ENTIDADE]", Entidade)
+                                        .Replace("[ANO_EXERCICIO]", $"{registroCabecalho[20]}".Trim())
+                                        .Replace("[MES_EXERCICIO]", $"{registroCabecalho[21]}".Trim())
+                                        .Replace("[DATA_CRIACAO]", DateTime.Now.ToString("yyyy-MM-dd"))
+                                        .Replace("[ANO_PAGAMENTO]", $"{registroCabecalho[20]}".Trim())
+                                        .Replace("[MES_PAGAMENTO]", $"{registroCabecalho[21]}".Trim())
+                                        .Replace("[IDENTIFICACAO_AGENTES]", agentes);
+
+                using (StreamWriter saida = new StreamWriter(Path.Combine(diretorioBaseSaida, "AUDESPPagamentoFolha.xml")))
+                {
+                    saida.Write(templateFinal);
+                    MessageBox.Show("Arquivo gerado com sucesso!");
+                }
+            }
         }
+
+        #endregion
 
         public static void ConverterParaXMLResumo(Stream dadosPlanilha)
         {
