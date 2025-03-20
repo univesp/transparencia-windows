@@ -237,7 +237,7 @@ namespace TransparenciaWindows.Services
                     agentes += templateAgente
                                 .Replace("[CPF]", MontarCPF(registroPessoal))
                                 .Replace("[CODIGO_CARGO]", $"{registroPessoal[45]}".Trim())
-                                .Replace("[FORMA_PAGAMENTO]", "")
+                                .Replace("[FORMA_PAGAMENTO]", $"{registroPessoal[156]}".Split('-')[0].Trim())
                                 .Replace("[NUMERO_BANCO]", $"{registroPessoal[157]}".Trim())
                                 .Replace("[AGENCIA]", $"{registroPessoal[158]}".Trim())
                                 .Replace("[CONTA_CORRENTE]", $"{registroPessoal[159]}".Trim())
@@ -325,9 +325,56 @@ namespace TransparenciaWindows.Services
 
         #endregion
 
+        #region XML Verbas
+
         public static void ConverterParaXMLVerbas(Stream dadosPlanilha)
         {
             MessageBox.Show("Convertendo para XML - Verbas");
+
+            string diretorioBaseTemplates = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Templates\AUDESP");
+            string diretorioBaseSaida = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Outputs");
+
+            using (var planilha = ExcelReaderFactory.CreateReader(dadosPlanilha))
+            {
+                // Leitura dos arquivos de template da AUDESP
+                string templateVerbas = File.ReadAllText(Path.Combine(diretorioBaseTemplates, "VerbasRemuneratorias.txt"));
+
+                string itens = "";
+
+                var ds = planilha.AsDataSet();
+                var abaVencimentos = ds.Tables[5];
+                for (int i = 1; i < abaVencimentos.Rows.Count; i++)
+                {
+                    DataRow registroVencimentos = abaVencimentos.Rows[i];
+
+                    string entraCalculoTeto = $"{registroVencimentos[11]}".Split('-')[0].Trim();
+
+                    itens += "\t<cvr:VerbasRemuneratorias>\n";
+                    itens += "\t<cvr:Codigo>" + $"{registroVencimentos[5]}".Trim() + "</cvr:Codigo>\n";
+                    itens += "\t<cvr:Nome>" + $"{ registroVencimentos[6]}".Trim() + "</cvr:Nome>\n";
+                    itens += "\t<cvr:EntraNoCalculoDoTetoConstitucional>" + entraCalculoTeto + "</cvr:EntraNoCalculoDoTetoConstitucional>\n";
+                    itens += "\t</cvr:VerbasRemuneratorias>\n";
+                }
+
+                var abaCabecalho = ds.Tables[0];
+                DataRow registroCabecalho = abaCabecalho.Rows[1];
+
+                string templateFinal = templateVerbas
+                                        .Replace("[VERBAS_REMUNERATORIAS]", itens)
+                                        .Replace("[MUNICIPIO]", $"{registroCabecalho[18]}".Trim())
+                                        .Replace("[ENTIDADE]", $"{registroCabecalho[19]}".Trim())
+                                        .Replace("[ANO_EXERCICIO]", $"{registroCabecalho[20]}".Trim())
+                                        .Replace("[DATA_CRIACAO]", DateTime.Now.ToString("yyyy-MM-dd"))
+                                        .Replace("[TIPO_DOCUMENTO]", "Cadastro de Verbas Remuneratórias");
+                                 
+                using (StreamWriter saida = new StreamWriter(Path.Combine(diretorioBaseSaida, "AUDESPVerbas.xml")))
+                {
+                    saida.Write(templateFinal);
+                    MessageBox.Show("Arquivo gerado com sucesso!");
+                }
+            }
         }
+
+        #endregion
     }
 }
