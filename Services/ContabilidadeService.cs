@@ -84,7 +84,7 @@ namespace TransparenciaWindows.Services
             {
                 Codigo = codigo;               
                 Fve = fve;
-                Audesp = Audesp;
+                Audesp = audesp;
             }
 
             public string Codigo { get; set; }         

@@ -59,34 +59,41 @@ namespace TransparenciaWindows.Services
                                                                  IXLWorksheet abaPlanMesclada)
         {
             for (int i = 0; i < abaFinanceiro.Rows.Count; i++)
-            {
-                string[] colunas;
-
+            {            
                 DataRow registro = abaFinanceiro.Rows[i];
 
+                // se a iteração atual é o cabeçalho, todas as colunas devem ser copiadas
+                // senão, apenas as 10 primeiras colunas são fixas
+                int numColunas = i == 0 ? (registro.ItemArray.Length - 1) : 10;
+
                 // cópia das 10 primeiras colunas da planilha mensal para a mesclada
-                for (int j = 0; j <= 10; j++)
+                for (int j = 0; j <= numColunas; j++)
                 {
                     abaPlanMesclada.Cell(i + 1, j + 1).Value = $"{registro[j]}".Trim();
                 }
 
+                // se cabeçalho, os demais passos de atribuição dinâmica de verbas não devem continuar
+                if (i == 0) { continue; }
+
                 // as colunas variáveis devem ir da 11 até o fim da aba
                 int indexColunasVariaveis = 11;
                 RegistroFinanceiro salario = salariosContabil.Find(s => $"{s.Codigo}".Trim() == $"{registro[1]}".Trim());
+                if (salario == null) { continue; }
+
                 for (int j = 0; j < salario.Verbas.Count; j++)
                 {
                     Verba verba = salario.Verbas[j];
 
                     // os valores da planilha original não podem ter ponto ou vírgula
                     string valor = verba.Valor.Replace(".", "").Replace(",", "").Trim();
-                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis).Value = salario.Codigo;
-                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 1).Value = valor;
-                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 2).Value = verba.Indicacao;
-                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 3).Value = verba.DoMes;
-                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 4).Value = verba.Fve;
-                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 5).Value = verba.Audesp;
-                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 6).Value = "";
-                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 7).Value = "";               
+                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 1).Value = salario.Codigo;
+                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 2).Value = valor;
+                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 3).Value = verba.Indicacao;
+                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 4).Value = verba.DoMes;
+                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 5).Value = verba.Fve;
+                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 6).Value = verba.Audesp;
+                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 7).Value = "";
+                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 8).Value = "";               
 
                     // incremento para o grupo de 8 colunas de informação financeira por verba
                     indexColunasVariaveis += 8;
