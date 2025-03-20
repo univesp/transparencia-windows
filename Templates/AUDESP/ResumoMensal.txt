@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="ISO-8859-1"?>
+<rmfp:ResumoMensalFolhaPagamento
+  xmlns:gen="http://www.tce.sp.gov.br/audesp/xml/generico"
+  xmlns:ap="http://www.tce.sp.gov.br/audesp/xml/atospessoal"
+  xmlns:aux="http://www.tce.sp.gov.br/audesp/xml/auxiliar"
+  xmlns:rmfp="http://www.tce.sp.gov.br/audesp/xml/remuneracao"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.tce.sp.gov.br/audesp/xml/remuneracao ./remuneracao/AUDESP_RESUMO_MENSAL_FOLHA_PAGAMENTO_2025_A.XSD">
+  <rmfp:Descritor>
+    <gen:AnoExercicio>[ANO_EXERCICIO]</gen:AnoExercicio>
+    <gen:TipoDocumento>Resumo Mensal da Folha de Pagamento</gen:TipoDocumento>
+    <gen:Entidade>[ENTIDADE]</gen:Entidade>
+    <gen:Municipio>[MUNICIPIO]</gen:Municipio>
+    <gen:DataCriacaoXML>[DATA_CRIACAO]</gen:DataCriacaoXML>
+    <gen:MesExercicio>[MES_EXERCICIO]</gen:MesExercicio>
+  </rmfp:Descritor>
+  <rmfp:ListaResumoFolhaPagamento>
+    <rmfp:MunicipioEntidadeLotacao>
+      <gen:codigoMunicipio>[COD_MUNICIPIO]</gen:codigoMunicipio>
+      <gen:codigoEntidade>[COD_ENTIDADE]</gen:codigoEntidade>
+    </rmfp:MunicipioEntidadeLotacao>
+    <rmfp:VlFGTS>[FGTS]</rmfp:VlFGTS>
+    <rmfp:VlContribPrevGeralAgPolitico>[GERAL_AG_POLITICO]</rmfp:VlContribPrevGeralAgPolitico>
+    <rmfp:VlContribPrevProprioAgPolitico>[PROPRIO_AG_POLITICO]</rmfp:VlContribPrevProprioAgPolitico>
+    <rmfp:VlContribPrevGeralAgNaoPolitico>[GERAL_AG_NAO_POLITICO]</rmfp:VlContribPrevGeralAgNaoPolitico>
+    <rmfp:VlContribPrevProprioAgNaoPolitico>[PROPRIO_AG_NAO_POLITICO]</rmfp:VlContribPrevProprioAgNaoPolitico>
+  </rmfp:ListaResumoFolhaPagamento>
+</rmfp:ResumoMensalFolhaPagamento>

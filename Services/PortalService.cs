@@ -1,8 +1,8 @@
-﻿using System;
+﻿using ExcelDataReader;
+using System;
 using System.Data;
 using System.IO;
 using System.Windows.Forms;
-using ExcelDataReader;
 using TransparenciaWindows.Utils;
 
 namespace TransparenciaWindows.Services

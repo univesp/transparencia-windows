@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="ISO-8859-1"?>
+<foap:FolhaOrdinariaAgentePublico xmlns:ap="http://www.tce.sp.gov.br/audesp/xml/atospessoal"
+    xmlns:aux="http://www.tce.sp.gov.br/audesp/xml/auxiliar"
+    xmlns:foap="http://www.tce.sp.gov.br/audesp/xml/remuneracao"
+    xmlns:gen="http://www.tce.sp.gov.br/audesp/xml/generico"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.tce.sp.gov.br/audesp/xml/remuneracao ./folhaOrdinaria/AUDESP_FOLHA_ORDINARIA_AGENTE_PUBLICO_2025_A.XSD">
+  <foap:Descritor>
+    <gen:AnoExercicio>[ANO_EXERCICIO]</gen:AnoExercicio>
+    <gen:TipoDocumento>Folha Ordinária</gen:TipoDocumento>
+    <gen:Entidade>[ENTIDADE]</gen:Entidade>
+    <gen:Municipio>[MUNICIPIO]</gen:Municipio>
+    <gen:DataCriacaoXML>[DATA_CRIACAO]</gen:DataCriacaoXML>
+    <gen:MesExercicio>[MES_EXERCICIO]</gen:MesExercicio>
+  </foap:Descritor>
+  [IDENTIFICACAO_AGENTE]
+</foap:FolhaOrdinariaAgentePublico>

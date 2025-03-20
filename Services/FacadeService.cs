@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace TransparenciaWindows.Services
 {
     public class FacadeService
     {
-        public static void Converter(String tipoArquivo, StreamReader planilhaMensal)
+        public static void Converter(string tipoArquivo, StreamReader planilhaMensal)
         {
             switch (tipoArquivo)
             {

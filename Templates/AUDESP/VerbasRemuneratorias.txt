@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="ISO-8859-1"?>
+<cvr:CadastroVerbasRemuneratorias
+  xmlns:gen="http://www.tce.sp.gov.br/audesp/xml/generico"
+  xmlns:ap="http://www.tce.sp.gov.br/audesp/xml/atospessoal"
+  xmlns:aux="http://www.tce.sp.gov.br/audesp/xml/auxiliar"
+  xmlns:cvr="http://www.tce.sp.gov.br/audesp/xml/remuneracao"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.tce.sp.gov.br/audesp/xml/remuneracao ./verbasremuneratorias/AUDESP_VERBAS_REMUNERATORIAS_2025_A.XSD">
+  <cvr:Descritor>
+    <gen:AnoExercicio>[ANO_EXERCICIO]</gen:AnoExercicio>
+    <gen:TipoDocumento>[TIPO_DOCUMENTO]</gen:TipoDocumento>
+    <gen:Entidade>[ENTIDADE]</gen:Entidade>
+    <gen:Municipio>[MUNICIPIO]</gen:Municipio>
+    <gen:DataCriacaoXML>[DATA_CRIACAO]</gen:DataCriacaoXML>
+  </cvr:Descritor>
+  [VERBAS_REMUNERATORIAS]
+</cvr:CadastroVerbasRemuneratorias>

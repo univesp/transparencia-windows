@@ -136,5 +136,14 @@
   <ItemGroup>
     <Folder Include="Outputs\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templates\AUDESP\FolhaOrdinaria.txt" />
+    <Content Include="Templates\AUDESP\Fragmentos\AgenteFolha.txt" />
+    <Content Include="Templates\AUDESP\Fragmentos\AgentePublico.txt" />
+    <Content Include="Templates\AUDESP\Fragmentos\Verbas.txt" />
+    <Content Include="Templates\AUDESP\PagamentoFolha.txt" />
+    <Content Include="Templates\AUDESP\ResumoMensal.txt" />
+    <Content Include="Templates\AUDESP\VerbasRemuneratorias.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
