@@ -19,6 +19,22 @@ namespace TransparenciaWindows
         public Form1()
         {
             InitializeComponent();
+            webCabecalho.DocumentText = @"
+<html>
+<head><link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css' crossorigin='anonymous' /></head>
+                <body>    
+<div class='py-5 text-center'>
+                <img class='d-block mx-auto mb-4' src='https://apps.univesp.br/transparencia/logo-univesp.png' alt='' width='72' height='72'>
+                    <h2>Transparência</h2>
+                    <p class='lead'>
+                      Solução para conversão dos dados de transparência nos formatos esperados
+                      pelos integradores dos órgãos de controle, como os da PRODESP(Decreto nº
+                      52.624, de 15/01/08, ou Portal da Transparência) e da AUDESP(TCE-SP).
+                    </p>
+                  </div>
+</body>
+</html>
+                ";
         }
 
         private void btnCarregarPlanilhaMensal_Click(object sender, EventArgs e)
@@ -30,6 +46,7 @@ namespace TransparenciaWindows
                     try
                     {
                         _planilhaMensal = new StreamReader(dialogo.FileName);
+                        lblCaminhoPlanilhaMensal.Text = dialogo.FileName;
                         MessageBox.Show("Planilha mensal carregada");
                     } 
                     catch (IOException ex)
