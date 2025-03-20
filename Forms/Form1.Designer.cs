@@ -1,7 +1,7 @@
 ﻿
 namespace TransparenciaWindows
 {
-    partial class Form1
+    partial class frmAplicacao
     {
         /// <summary>
         /// Variável de designer necessária.
@@ -29,6 +29,7 @@ namespace TransparenciaWindows
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAplicacao));
             this.btnCarregarPlanilhaMensal = new System.Windows.Forms.Button();
             this.btnConverter = new System.Windows.Forms.Button();
             this.cbxTipoArquivo = new System.Windows.Forms.ComboBox();
@@ -36,6 +37,10 @@ namespace TransparenciaWindows
             this.label1 = new System.Windows.Forms.Label();
             this.lblCaminhoPlanilhaMensal = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnCarregarPlanilhaContabil = new System.Windows.Forms.Button();
+            this.lblCaminhoPlanilhaContabil = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnCarregarPlanilhaMensal
@@ -51,11 +56,11 @@ namespace TransparenciaWindows
             // 
             // btnConverter
             // 
-            this.btnConverter.BackColor = System.Drawing.Color.LightGreen;
+            this.btnConverter.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.btnConverter.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConverter.Location = new System.Drawing.Point(197, 586);
+            this.btnConverter.Location = new System.Drawing.Point(29, 797);
             this.btnConverter.Name = "btnConverter";
-            this.btnConverter.Size = new System.Drawing.Size(123, 43);
+            this.btnConverter.Size = new System.Drawing.Size(652, 43);
             this.btnConverter.TabIndex = 1;
             this.btnConverter.Text = "Converter";
             this.btnConverter.UseVisualStyleBackColor = false;
@@ -72,9 +77,9 @@ namespace TransparenciaWindows
             "XML de Folha Ordinária (AUDESP)",
             "XML de Pagamento da Folha Ordinária (AUDESP)",
             "XML de Resumo Mensal da Folha Ordinária (AUDESP)"});
-            this.cbxTipoArquivo.Location = new System.Drawing.Point(28, 519);
+            this.cbxTipoArquivo.Location = new System.Drawing.Point(29, 709);
             this.cbxTipoArquivo.Name = "cbxTipoArquivo";
-            this.cbxTipoArquivo.Size = new System.Drawing.Size(653, 28);
+            this.cbxTipoArquivo.Size = new System.Drawing.Size(651, 28);
             this.cbxTipoArquivo.TabIndex = 2;
             // 
             // webCabecalho
@@ -93,7 +98,7 @@ namespace TransparenciaWindows
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(25, 355);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(335, 25);
+            this.label1.Size = new System.Drawing.Size(268, 20);
             this.label1.TabIndex = 5;
             this.label1.Text = "1) Carregue a planilha mensal:";
             // 
@@ -111,18 +116,62 @@ namespace TransparenciaWindows
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(25, 476);
+            this.label2.Location = new System.Drawing.Point(25, 667);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(465, 25);
+            this.label2.Size = new System.Drawing.Size(372, 20);
             this.label2.TabIndex = 7;
-            this.label2.Text = "2) Selecione o tipo de arquivo a ser gerado";
+            this.label2.Text = "3) Selecione o tipo de arquivo a ser gerado";
             // 
-            // Form1
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(25, 484);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(465, 25);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "2) Carregue a planilha da contabilidade (*):";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(26, 519);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(835, 64);
+            this.label4.TabIndex = 9;
+            this.label4.Text = resources.GetString("label4.Text");
+            // 
+            // btnCarregarPlanilhaContabil
+            // 
+            this.btnCarregarPlanilhaContabil.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCarregarPlanilhaContabil.Location = new System.Drawing.Point(28, 597);
+            this.btnCarregarPlanilhaContabil.Name = "btnCarregarPlanilhaContabil";
+            this.btnCarregarPlanilhaContabil.Size = new System.Drawing.Size(199, 34);
+            this.btnCarregarPlanilhaContabil.TabIndex = 10;
+            this.btnCarregarPlanilhaContabil.Text = "Carregar planilha";
+            this.btnCarregarPlanilhaContabil.UseVisualStyleBackColor = true;
+            this.btnCarregarPlanilhaContabil.Click += new System.EventHandler(this.btnCarregarPlanilhaContabil_Click);
+            // 
+            // lblCaminhoPlanilhaContabil
+            // 
+            this.lblCaminhoPlanilhaContabil.AutoSize = true;
+            this.lblCaminhoPlanilhaContabil.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCaminhoPlanilhaContabil.Location = new System.Drawing.Point(233, 604);
+            this.lblCaminhoPlanilhaContabil.Name = "lblCaminhoPlanilhaContabil";
+            this.lblCaminhoPlanilhaContabil.Size = new System.Drawing.Size(210, 20);
+            this.lblCaminhoPlanilhaContabil.TabIndex = 11;
+            this.lblCaminhoPlanilhaContabil.Text = "Nenhum arquivo carregado";
+            // 
+            // frmAplicacao
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(715, 697);
+            this.ClientSize = new System.Drawing.Size(715, 860);
+            this.Controls.Add(this.lblCaminhoPlanilhaContabil);
+            this.Controls.Add(this.btnCarregarPlanilhaContabil);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lblCaminhoPlanilhaMensal);
             this.Controls.Add(this.label1);
@@ -130,7 +179,7 @@ namespace TransparenciaWindows
             this.Controls.Add(this.cbxTipoArquivo);
             this.Controls.Add(this.btnConverter);
             this.Controls.Add(this.btnCarregarPlanilhaMensal);
-            this.Name = "Form1";
+            this.Name = "frmAplicacao";
             this.Text = "Transparência UNIVESP - v1.0";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -146,6 +195,10 @@ namespace TransparenciaWindows
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblCaminhoPlanilhaMensal;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnCarregarPlanilhaContabil;
+        private System.Windows.Forms.Label lblCaminhoPlanilhaContabil;
     }
 }
 

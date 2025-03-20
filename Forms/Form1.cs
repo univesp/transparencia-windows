@@ -12,11 +12,12 @@ using TransparenciaWindows.Services;
 
 namespace TransparenciaWindows
 {
-    public partial class Form1 : Form
+    public partial class frmAplicacao : Form
     {
         private StreamReader _planilhaMensal;
+        private StreamReader _planilhaContabilidade;
 
-        public Form1()
+        public frmAplicacao()
         {
             InitializeComponent();
             webCabecalho.DocumentText = @"
@@ -51,7 +52,26 @@ namespace TransparenciaWindows
                     } 
                     catch (IOException ex)
                     {
-                        MessageBox.Show("Erro ao abrir a planilha; verifique se ela não está aberta em sua máquina.");
+                        MessageBox.Show("Erro ao carregar a planilha; verifique se ela não está aberta em seu computador.");
+                    }
+                }
+            }
+        }
+        private void btnCarregarPlanilhaContabil_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog dialogo = new OpenFileDialog())
+            {
+                if (dialogo.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        _planilhaContabilidade = new StreamReader(dialogo.FileName);
+                        lblCaminhoPlanilhaContabil.Text = dialogo.FileName;
+                        MessageBox.Show("Planilha da contabilidade carregada");
+                    }
+                    catch (IOException ex)
+                    {
+                        MessageBox.Show("Erro ao carregar a planilha; verifique se ela não está aberta em seu computador.");
                     }
                 }
             }
@@ -73,6 +93,6 @@ namespace TransparenciaWindows
                     MessageBox.Show("Planilha mensal NÃO CARREGADA");
                 }
             };
-        }
+        }       
     }
 }
