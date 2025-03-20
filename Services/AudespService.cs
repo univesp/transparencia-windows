@@ -270,10 +270,60 @@ namespace TransparenciaWindows.Services
 
         #endregion
 
+        #region XML Resumo Mensal
+
         public static void ConverterParaXMLResumo(Stream dadosPlanilha)
         {
             MessageBox.Show("Convertendo para XML - Resumo mensal");
+
+            // Leitura dos arquivos de template da AUDESP
+            string diretorioBaseTemplates = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Templates\AUDESP");
+            string diretorioBaseSaida = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Outputs");
+
+            using (var planilha = ExcelReaderFactory.CreateReader(dadosPlanilha))
+            {
+                // Leitura dos arquivos de template da AUDESP
+                string templateResumo = File.ReadAllText(Path.Combine(diretorioBaseTemplates, "ResumoMensal.txt"));
+
+                string agentes = "";
+
+                var ds = planilha.AsDataSet();
+
+                var abaCabecalho = ds.Tables[0];
+                DataRow registroCabecalho = abaCabecalho.Rows[1];
+
+                var abaEncargos = ds.Tables[1];
+                DataRow registroEncargos = abaEncargos.Rows[1];
+
+                float.TryParse($"{registroEncargos[68]}", out float fgts);
+                float.TryParse($"{registroEncargos[69]}", out float geralAgPolitico);
+                float.TryParse($"{registroEncargos[70]}", out float proprioAgPolitico);
+                float.TryParse($"{registroEncargos[71]}", out float geralAgNaoPolitico);
+                float.TryParse($"{registroEncargos[72]}", out float proprioAgNaoPolitico);
+
+                string templateFinal = templateResumo
+                                        .Replace("[MUNICIPIO]", $"{registroEncargos[66]}".Trim())
+                                        .Replace("[COD_MUNICIPIO]", $"{registroEncargos[66]}".Trim())
+                                        .Replace("[ENTIDADE]", $"{registroEncargos[67]}".Trim())
+                                        .Replace("[COD_ENTIDADE]", $"{registroEncargos[67]}".Trim())
+                                        .Replace("[FGTS]", DeFloatParaTexto(fgts))
+                                        .Replace("[GERAL_AG_POLITICO]", DeFloatParaTexto(geralAgPolitico))
+                                        .Replace("[PROPRIO_AG_POLITICO]", DeFloatParaTexto(proprioAgPolitico))
+                                        .Replace("[GERAL_AG_NAO_POLITICO]", DeFloatParaTexto(geralAgNaoPolitico))
+                                        .Replace("[PROPRIO_AG_NAO_POLITICO]", DeFloatParaTexto(proprioAgNaoPolitico))
+                                        .Replace("[DATA_CRIACAO]", DateTime.Now.ToString("yyyy-MM-dd"))
+                                        .Replace("[ANO_EXERCICIO]", $"{registroCabecalho[20]}".Trim())
+                                        .Replace("[MES_EXERCICIO]", $"{registroCabecalho[21]}".Trim());
+            
+                using (StreamWriter saida = new StreamWriter(Path.Combine(diretorioBaseSaida, "AUDESPResumoMensal.xml")))
+                {
+                    saida.Write(templateFinal);
+                    MessageBox.Show("Arquivo gerado com sucesso!");
+                }
+            }
         }
+
+        #endregion
 
         public static void ConverterParaXMLVerbas(Stream dadosPlanilha)
         {
