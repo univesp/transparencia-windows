@@ -6,6 +6,8 @@ namespace TransparenciaWindows.Services
     {
         public static void Converter(string tipoArquivo, StreamReader planilhaMensal)
         {
+            MesclagemService.CriarPlanilhaMesclada(planilhaMensal.BaseStream);
+
             switch (tipoArquivo)
             {
                 case "TXT do Portal da Transparência":
