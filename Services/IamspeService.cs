@@ -20,8 +20,11 @@ namespace TransparenciaWindows.Services
 
         public static void ConverterParaTXT(IExcelDataReader planilha)
         {
-            MessageBox.Show("Convertendo para TXT IAMSPE");
-           
+            MessageBox.Show("Convertendo para TXT do IAMSPE",
+                            "Informação", 
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+
             var ds = planilha.AsDataSet();                
             var dadosPessoais = ConverterDadosPessoais(ds.Tables[2]);
 
@@ -31,7 +34,10 @@ namespace TransparenciaWindows.Services
             using (StreamWriter saida = new StreamWriter(filePath))
             {                 
                 saida.Write(dadosPessoais);                 
-                MessageBox.Show("Arquivo gerado com sucesso!");
+                MessageBox.Show("Arquivo gerado com sucesso",
+                                "Informação",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
             }            
         }
 

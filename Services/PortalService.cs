@@ -11,6 +11,11 @@ namespace TransparenciaWindows.Services
     {
         public static void ConverterParaTXT(IExcelDataReader planilha)
         {        
+            MessageBox.Show("Convertendo para TXT do Portal", 
+                            "Informação", 
+                            MessageBoxButtons.OK, 
+                            MessageBoxIcon.Information);
+
             var ds = planilha.AsDataSet();
             var dadosEncargos = ConverterDadosEncargos(ds.Tables[1]);
             var dadosPessoais = ConverterDadosPessoais(ds.Tables[2]);
@@ -35,7 +40,11 @@ namespace TransparenciaWindows.Services
                 saida.Write(dadosVencimentos);
                 saida.Write(dadosFaixas);
                 saida.Write(dadosUnidades);
-                MessageBox.Show("Arquivo gerado com sucesso!");
+
+                MessageBox.Show("Arquivo gerado com sucesso",
+                                "Informação", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Information);
             }            
         }
 

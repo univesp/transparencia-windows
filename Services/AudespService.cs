@@ -55,7 +55,10 @@ namespace TransparenciaWindows.Services
 
         public static void ConverterParaXMLFolha(IExcelDataReader planilha)
         {
-            MessageBox.Show("Convertendo para XML - Folha ordinária");
+            MessageBox.Show("Convertendo para XML - Folha ordinária. Aguarde!", 
+                            "Informação",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
 
             string diretorioBaseTemplates = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Templates\AUDESP");
             string diretorioBaseSaida = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Outputs");
@@ -184,7 +187,10 @@ namespace TransparenciaWindows.Services
             using (StreamWriter saida = new StreamWriter(Path.Combine(diretorioBaseSaida, "AUDESPFolhaOrdinaria.xml")))
             {
                 saida.Write(templateFinal);
-                MessageBox.Show("Arquivo gerado com sucesso!");
+                MessageBox.Show("Arquivo gerado com sucesso",
+                                "Informação", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Information);
             }
                       
         }
@@ -205,7 +211,10 @@ namespace TransparenciaWindows.Services
 
         public static void ConverterParaXMLPagamentoFolha(IExcelDataReader planilha)
         {
-            MessageBox.Show("Convertendo para XML - Pagamento Folha");
+            MessageBox.Show("Convertendo para XML - Pagamento Folha",
+                            "Informação", 
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
 
             string diretorioBaseTemplates = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Templates\AUDESP");
             string diretorioBaseSaida = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Outputs");
@@ -261,7 +270,10 @@ namespace TransparenciaWindows.Services
             using (StreamWriter saida = new StreamWriter(Path.Combine(diretorioBaseSaida, "AUDESPPagamentoFolha.xml")))
             {
                 saida.Write(templateFinal);
-                MessageBox.Show("Arquivo gerado com sucesso!");
+                MessageBox.Show("Arquivo gerado com sucesso",
+                                "Informação", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Information);
             }
             
         }
@@ -272,7 +284,10 @@ namespace TransparenciaWindows.Services
 
         public static void ConverterParaXMLResumo(IExcelDataReader planilha)
         {
-            MessageBox.Show("Convertendo para XML - Resumo mensal");
+            MessageBox.Show("Convertendo para XML - Resumo mensal",
+                            "Informação",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
 
             // Leitura dos arquivos de template da AUDESP
             string diretorioBaseTemplates = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Templates\AUDESP");
@@ -315,7 +330,10 @@ namespace TransparenciaWindows.Services
             using (StreamWriter saida = new StreamWriter(Path.Combine(diretorioBaseSaida, "AUDESPResumoMensal.xml")))
             {
                 saida.Write(templateFinal);
-                MessageBox.Show("Arquivo gerado com sucesso!");
+                MessageBox.Show("Arquivo gerado com sucesso", 
+                                "Informação",
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Information);
             }
             
         }
@@ -326,7 +344,10 @@ namespace TransparenciaWindows.Services
 
         public static void ConverterParaXMLVerbas(IExcelDataReader planilha)
         {
-            MessageBox.Show("Convertendo para XML - Verbas");
+            MessageBox.Show("Convertendo para XML - Verbas", 
+                            "Informação",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
 
             string diretorioBaseTemplates = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Templates\AUDESP");
             string diretorioBaseSaida = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Outputs");                     
@@ -365,7 +386,10 @@ namespace TransparenciaWindows.Services
             using (StreamWriter saida = new StreamWriter(Path.Combine(diretorioBaseSaida, "AUDESPVerbas.xml")))
             {
                 saida.Write(templateFinal);
-                MessageBox.Show("Arquivo gerado com sucesso!");
+                MessageBox.Show("Arquivo gerado com sucesso", 
+                                "Informação", 
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
             }
             
         }

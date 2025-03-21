@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TransparenciaWindows.Services;
 
@@ -50,11 +43,18 @@ namespace TransparenciaWindows
                     {
                         _planilhaMensal = new StreamReader(dialogo.FileName);
                         lblCaminhoPlanilhaMensal.Text = dialogo.FileName;
-                        MessageBox.Show("Planilha mensal carregada com sucesso.");
+                        MessageBox.Show("Planilha mensal carregada com sucesso", 
+                                        "Informação", 
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Information);
+
                     }
                     catch (IOException ex)
                     {
-                        MessageBox.Show("Erro ao carregar a planilha; verifique se ela não está aberta em seu computador.");
+                        MessageBox.Show("Erro ao carregar a planilha; verifique se ela não está aberta em seu computador", 
+                                        "Erro",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Error);
                     }
                 }
             }
@@ -69,11 +69,17 @@ namespace TransparenciaWindows
                     {
                         _planilhaContabilidade = new StreamReader(dialogo.FileName);
                         lblCaminhoPlanilhaContabil.Text = dialogo.FileName;
-                        MessageBox.Show("Planilha da contabilidade carregada com sucesso.");
+                        MessageBox.Show("Planilha da contabilidade carregada com sucesso",
+                                        "Informação", 
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Information);
                     }
                     catch (IOException ex)
                     {
-                        MessageBox.Show("Erro ao carregar a planilha; verifique se ela não está aberta em seu computador.");
+                        MessageBox.Show("Erro ao carregar a planilha; verifique se ela não está aberta em seu computador",
+                                        "Erro", 
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Error);
                     }
                 }
             }
@@ -84,7 +90,10 @@ namespace TransparenciaWindows
             var opcaoEscolhida = cbxTipoArquivo.SelectedItem;
             if (opcaoEscolhida == null)
             {
-                MessageBox.Show("Selecione o tipo de arquivo a ser gerado.");
+                MessageBox.Show("Selecione o tipo de arquivo a ser gerado",
+                                "Atenção",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
             }
             else
             {
@@ -121,7 +130,10 @@ namespace TransparenciaWindows
                 }
                 else
                 {
-                    MessageBox.Show("A planilha mensal deve ser carregada!");
+                    MessageBox.Show("A planilha mensal deve ser carregada", 
+                                    "Atenção",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning);
                 }
             };
         }

@@ -107,7 +107,10 @@ namespace TransparenciaWindows.Services
             string caminhoArquivo = Path.Combine(_diretorioBaseSaida, nomeArquivo);
             if (!File.Exists(caminhoArquivo))
             {
-                MessageBox.Show("Não há arquivo para ser baixado", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Não há arquivo para ser baixado", 
+                                "Atenção", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Warning);
                 return;
             }
 
@@ -123,11 +126,17 @@ namespace TransparenciaWindows.Services
                     try
                     {
                         File.Copy(caminhoArquivo, dialogo.FileName, true);
-                        MessageBox.Show("Arquivo baixado com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Arquivo baixado com sucesso",
+                                        "Informação",
+                                        MessageBoxButtons.OK, 
+                                        MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Erro: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Erro: {ex.Message}",
+                                        "Erro", 
+                                        MessageBoxButtons.OK, 
+                                        MessageBoxIcon.Error);
                     }
                 }
             }
@@ -138,7 +147,10 @@ namespace TransparenciaWindows.Services
             string caminhoArquivo = Path.Combine(_diretorioBaseSaida, "PlanilhaMesclada.xlsx");
             if (!File.Exists(caminhoArquivo))
             {
-                MessageBox.Show("Não há arquivo para ser baixado", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Não há arquivo para ser baixado", 
+                                "Atenção", 
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
                 return;
             }
 
@@ -153,11 +165,17 @@ namespace TransparenciaWindows.Services
                     try
                     {
                         File.Copy(caminhoArquivo, dialogo.FileName, true);
-                        MessageBox.Show("Arquivo baixado com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Arquivo baixado com sucesso",
+                                        "Informação", 
+                                        MessageBoxButtons.OK, 
+                                        MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Erro: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Erro: {ex.Message}", 
+                                        "Erro", 
+                                        MessageBoxButtons.OK, 
+                                        MessageBoxIcon.Error);
                     }
                 }
             }
