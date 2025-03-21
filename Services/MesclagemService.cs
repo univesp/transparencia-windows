@@ -33,13 +33,13 @@ namespace TransparenciaWindows.Services
                 // Detalhe - Tabela de CARGO  FUNÇ
                 CopiarAbaMensalParaMesclada(ds.Tables[4], planilhaMesclada.Worksheets.Add("Detalhe - Tabela de CARGO  FUNÇ"));
                 // Detalhe - Tabela de VENCIMENTO
-                CopiarAbaMensalParaMesclada(ds.Tables[4], planilhaMesclada.Worksheets.Add("Detalhe - Tabela de VENCIMENTO"));
+                CopiarAbaMensalParaMesclada(ds.Tables[5], planilhaMesclada.Worksheets.Add("Detalhe - Tabela de VENCIMENTO"));
                 // Detalhe - Tabela de FAIXA SALAR
-                CopiarAbaMensalParaMesclada(ds.Tables[5], planilhaMesclada.Worksheets.Add("Detalhe - Tabela de FAIXA SALAR"));
+                CopiarAbaMensalParaMesclada(ds.Tables[6], planilhaMesclada.Worksheets.Add("Detalhe - Tabela de FAIXA SALAR"));
                 // Detalhe - Tabela de UNIDADES AD
-                CopiarAbaMensalParaMesclada(ds.Tables[6], planilhaMesclada.Worksheets.Add("Detalhe - Tabela de UNIDADES AD"));
+                CopiarAbaMensalParaMesclada(ds.Tables[7], planilhaMesclada.Worksheets.Add("Detalhe - Tabela de UNIDADES AD"));
                 // Tabelas auxiliares
-                CopiarAbaMensalParaMesclada(ds.Tables[7], planilhaMesclada.Worksheets.Add("Tabelas auxiliares"));
+                CopiarAbaMensalParaMesclada(ds.Tables[8], planilhaMesclada.Worksheets.Add("Tabelas auxiliares"));
 
                 planilhaMesclada.SaveAs(Path.Combine(diretorioBaseSaida, "PlanilhaMesclada.xlsx"));
             }

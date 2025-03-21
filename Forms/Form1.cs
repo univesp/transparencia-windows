@@ -48,7 +48,7 @@ namespace TransparenciaWindows
                     {
                         _planilhaMensal = new StreamReader(dialogo.FileName);
                         lblCaminhoPlanilhaMensal.Text = dialogo.FileName;
-                        MessageBox.Show("Planilha mensal carregada");
+                        MessageBox.Show("Planilha mensal carregada com sucesso.");
                     } 
                     catch (IOException ex)
                     {
@@ -67,7 +67,7 @@ namespace TransparenciaWindows
                     {
                         _planilhaContabilidade = new StreamReader(dialogo.FileName);
                         lblCaminhoPlanilhaContabil.Text = dialogo.FileName;
-                        MessageBox.Show("Planilha da contabilidade carregada");
+                        MessageBox.Show("Planilha da contabilidade carregada com sucesso.");
                     }
                     catch (IOException ex)
                     {
@@ -82,17 +82,25 @@ namespace TransparenciaWindows
             var opcaoEscolhida = cbxTipoArquivo.SelectedItem;
             if (opcaoEscolhida == null)
             {
-                MessageBox.Show("Selecione o tipo de arquivo a ser gerado");
+                MessageBox.Show("Selecione o tipo de arquivo a ser gerado.");
             } else
             {
                 if (_planilhaMensal != null)
                 {
-                    FacadeService.Converter(opcaoEscolhida.ToString(), _planilhaMensal.BaseStream, _planilhaContabilidade.BaseStream);
+                    FacadeService.Converter(opcaoEscolhida.ToString(), 
+                                            _planilhaMensal.BaseStream, 
+                                            _planilhaContabilidade != null ? _planilhaContabilidade.BaseStream : null);
                 } else
                 {
-                    MessageBox.Show("Planilha mensal NÃO CARREGADA");
+                    MessageBox.Show("A planilha mensal deve ser carregada!");
                 }
             };
-        }       
+        }
+
+        private void btnReiniciar_Click(object sender, EventArgs e)
+        {
+            Application.Restart();
+            Environment.Exit(0);
+        }
     }
 }

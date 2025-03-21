@@ -41,6 +41,7 @@ namespace TransparenciaWindows
             this.label4 = new System.Windows.Forms.Label();
             this.btnCarregarPlanilhaContabil = new System.Windows.Forms.Button();
             this.lblCaminhoPlanilhaContabil = new System.Windows.Forms.Label();
+            this.btnReiniciar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnCarregarPlanilhaMensal
@@ -128,7 +129,7 @@ namespace TransparenciaWindows
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(25, 484);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(465, 25);
+            this.label3.Size = new System.Drawing.Size(372, 20);
             this.label3.TabIndex = 8;
             this.label3.Text = "2) Carregue a planilha da contabilidade (*):";
             // 
@@ -137,7 +138,7 @@ namespace TransparenciaWindows
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(26, 519);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(835, 64);
+            this.label4.Size = new System.Drawing.Size(668, 51);
             this.label4.TabIndex = 9;
             this.label4.Text = resources.GetString("label4.Text");
             // 
@@ -162,12 +163,23 @@ namespace TransparenciaWindows
             this.lblCaminhoPlanilhaContabil.TabIndex = 11;
             this.lblCaminhoPlanilhaContabil.Text = "Nenhum arquivo carregado";
             // 
+            // btnReiniciar
+            // 
+            this.btnReiniciar.Location = new System.Drawing.Point(237, 888);
+            this.btnReiniciar.Name = "btnReiniciar";
+            this.btnReiniciar.Size = new System.Drawing.Size(235, 35);
+            this.btnReiniciar.TabIndex = 12;
+            this.btnReiniciar.Text = "Reiniciar aplicação";
+            this.btnReiniciar.UseVisualStyleBackColor = true;
+            this.btnReiniciar.Click += new System.EventHandler(this.btnReiniciar_Click);
+            // 
             // frmAplicacao
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(715, 860);
+            this.ClientSize = new System.Drawing.Size(715, 935);
+            this.Controls.Add(this.btnReiniciar);
             this.Controls.Add(this.lblCaminhoPlanilhaContabil);
             this.Controls.Add(this.btnCarregarPlanilhaContabil);
             this.Controls.Add(this.label4);
@@ -199,6 +211,7 @@ namespace TransparenciaWindows
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnCarregarPlanilhaContabil;
         private System.Windows.Forms.Label lblCaminhoPlanilhaContabil;
+        private System.Windows.Forms.Button btnReiniciar;
     }
 }
 
