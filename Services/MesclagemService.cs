@@ -14,10 +14,11 @@ namespace TransparenciaWindows.Services
         {
             string diretorioBaseSaida = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Outputs");
 
-            List<RegistroFinanceiro> salariosContabil = ContabilidadeService.ObterSalariosContabil(planilhaMensal, planilhaContabilidade);
+            List<SalarioContabil> salariosContabil = ObterSalariosContabil(planilhaMensal, planilhaContabilidade);
+            List<ValorContabil> valoresContabil = ObterVencimentosDescontosContabil(planilhaContabilidade);
 
             using (var planilhaMesclada = new XLWorkbook())
-            {                
+            {
                 var ds = planilhaMensal.AsDataSet();
 
                 // Devem ser copiados integralmente, sem transformações:
@@ -25,6 +26,8 @@ namespace TransparenciaWindows.Services
                 CopiarAbaMensalParaMesclada(ds.Tables[0], planilhaMesclada.Worksheets.Add("Header"));
                 // Detalhe - ENCARGOS SOCIAIS BEN
                 CopiarAbaMensalParaMesclada(ds.Tables[1], planilhaMesclada.Worksheets.Add("Detalhe - ENCARGOS SOCIAIS BEN"));
+                // Detalhe - Dados PESSOAIS  FUNCI
+                FormatarDadosPessoaisParaMesclada(ds.Tables[2], valoresContabil, planilhaMesclada.Worksheets.Add("Detalhe - Dados PESSOAIS  FUNCI"));
                 // Detalhe - Dados FINANCEIROS
                 FormatarDadosFinanceirosParaMesclada(ds.Tables[3], salariosContabil, planilhaMesclada.Worksheets.Add("Detalhe - Dados FINANCEIROS"));
                 // Detalhe - Tabela de CARGO  FUNÇ
@@ -37,7 +40,7 @@ namespace TransparenciaWindows.Services
                 CopiarAbaMensalParaMesclada(ds.Tables[6], planilhaMesclada.Worksheets.Add("Detalhe - Tabela de UNIDADES AD"));
                 // Tabelas auxiliares
                 CopiarAbaMensalParaMesclada(ds.Tables[7], planilhaMesclada.Worksheets.Add("Tabelas auxiliares"));
-  
+
                 planilhaMesclada.SaveAs(Path.Combine(diretorioBaseSaida, "PlanilhaMesclada.xlsx"));
             }
         }
@@ -48,18 +51,45 @@ namespace TransparenciaWindows.Services
             {
                 DataRow registro = abaPlanMensal.Rows[i];
                 for (int j = 0; j < registro.ItemArray.Length; j++)
-                {                    
+                {
                     abaPlanMesclada.Cell(i + 1, j + 1).Value = $"{registro[j]}".Trim();
                 }
             }
         }
 
-        private static void FormatarDadosFinanceirosParaMesclada(DataTable abaFinanceiro, 
-                                                                 List<RegistroFinanceiro> salariosContabil, 
+        private static void FormatarDadosPessoaisParaMesclada(DataTable abaPessoal,
+                                                              List<ValorContabil> valoresContabil,
+                                                              IXLWorksheet abaPlanMesclada)
+        {
+            for (int i = 0; i < abaPessoal.Rows.Count; i++)
+            {
+                DataRow registro = abaPessoal.Rows[i];
+
+                ValorContabil valor = valoresContabil.Find(v => $"{v.Codigo}".Trim() == $"{registro[11]}".Trim());
+
+                for (int j = 0; j < registro.ItemArray.Length; j++)
+                {
+                    if (valor != null && ((j >= 131 && j <= 133) || j == 160))
+                    {
+                        abaPlanMesclada.Cell(i + 1, 131).Value = valor.VencBruto.Replace(".", "").Replace(",", "").Trim();
+                        abaPlanMesclada.Cell(i + 1, 132).Value = valor.Descontos.Replace(".", "").Replace(",", "").Trim();
+                        abaPlanMesclada.Cell(i + 1, 133).Value = valor.SalLiquido.Replace(".", "").Replace(",", "").Trim();
+                        abaPlanMesclada.Cell(i + 1, 160).Value = valor.SalLiquido.Replace(".", "").Replace(",", "").Trim();
+                    }
+                    else
+                    {
+                        abaPlanMesclada.Cell(i + 1, j + 1).Value = $"{registro[j]}".Trim();
+                    }
+                }
+            }
+        }
+
+        private static void FormatarDadosFinanceirosParaMesclada(DataTable abaFinanceiro,
+                                                                 List<SalarioContabil> salariosContabil,
                                                                  IXLWorksheet abaPlanMesclada)
         {
             for (int i = 0; i < abaFinanceiro.Rows.Count; i++)
-            {            
+            {
                 DataRow registro = abaFinanceiro.Rows[i];
 
                 // se a iteração atual é o cabeçalho, todas as colunas devem ser copiadas
@@ -77,7 +107,7 @@ namespace TransparenciaWindows.Services
 
                 // as colunas variáveis devem ir da 11 até o fim da aba
                 int indexColunasVariaveis = 11;
-                RegistroFinanceiro salario = salariosContabil.Find(s => $"{s.Codigo}".Trim() == $"{registro[1]}".Trim());
+                SalarioContabil salario = salariosContabil.Find(s => $"{s.Codigo}".Trim() == $"{registro[1]}".Trim());
                 if (salario == null) { continue; }
 
                 for (int j = 0; j < salario.Verbas.Count; j++)
@@ -93,11 +123,11 @@ namespace TransparenciaWindows.Services
                     abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 5).Value = verba.Fve;
                     abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 6).Value = verba.Audesp;
                     abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 7).Value = "";
-                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 8).Value = "";               
+                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 8).Value = "";
 
                     // incremento para o grupo de 8 colunas de informação financeira por verba
                     indexColunasVariaveis += 8;
-                }              
+                }
             }
         }
     }

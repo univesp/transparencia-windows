@@ -27,9 +27,9 @@ namespace TransparenciaWindows.Services
 
         #region Classes auxiliares
 
-        public class RegistroFinanceiro
+        public class SalarioContabil
         {
-            public RegistroFinanceiro(string codigo, string nome, List<Verba> verbas)
+            public SalarioContabil(string codigo, string nome, List<Verba> verbas)
             {
                 Codigo = codigo;
                 Nome = nome;
@@ -41,7 +41,7 @@ namespace TransparenciaWindows.Services
             public List<Verba> Verbas { get; set; }        
         }
 
-        private class ValorContabil
+        public class ValorContabil
         {
             public ValorContabil(string codigo, string nome, string vencBruto, string descontos, string salLiquido) {
                 Codigo = codigo;
@@ -96,9 +96,9 @@ namespace TransparenciaWindows.Services
 
         #region Método principal
 
-        public static List<RegistroFinanceiro> ObterSalariosContabil(IExcelDataReader planilhaMensal, IExcelDataReader planilhaContabil)
+        public static List<SalarioContabil> ObterSalariosContabil(IExcelDataReader planilhaMensal, IExcelDataReader planilhaContabil)
         {
-            List<RegistroFinanceiro> registrosFinanceiros = new List<RegistroFinanceiro>();
+            List<SalarioContabil> registrosFinanceiros = new List<SalarioContabil>();
                         
             var dsMensal = planilhaMensal.AsDataSet();
                             
@@ -121,7 +121,7 @@ namespace TransparenciaWindows.Services
                 if (RemoverFinalPontoZero(ultimoCodigo.Trim()) != RemoverFinalPontoZero($"{registro[ColCodigo]}".Trim()))
                 {
                     ultimoCodigo = RemoverFinalPontoZero($"{registro[ColCodigo]}".Trim());
-                    registrosFinanceiros.Add(new RegistroFinanceiro(ultimoCodigo, $"{registro[5]}".Trim(), new List<Verba>()));
+                    registrosFinanceiros.Add(new SalarioContabil(ultimoCodigo, $"{registro[5]}".Trim(), new List<Verba>()));
                 }
 
                 AdicionarVencimentoDesconto(registrosFinanceiros, registro, vencDescMensal);
@@ -135,15 +135,16 @@ namespace TransparenciaWindows.Services
 
         #region Métodos auxiliares
 
-        private static List<ValorContabil> ObterVencimentosDescontosContabil(DataTable aba)
+        public static List<ValorContabil> ObterVencimentosDescontosContabil(IExcelDataReader planilha)
         {
             List<ValorContabil> valores = new List<ValorContabil>();
 
+            DataTable aba = planilha.AsDataSet().Tables[0];
             for (int i = 1; i < aba.Rows.Count; i++)
             {
                 DataRow registro = aba.Rows[i];
-
-                if ($"{registro[ColVencBruto]}".Trim() == "")
+               
+                if ($"{registro[ColVencBruto]}".Trim() == "" || ($"{registro[ColVencBruto]}".Trim() == "0"))
                 {
                     continue;
                 }
@@ -173,7 +174,7 @@ namespace TransparenciaWindows.Services
             return vencDescMensal;
         }
 
-        private static void AdicionarVencimentoDesconto(List<RegistroFinanceiro> registrosFinanceiros,
+        private static void AdicionarVencimentoDesconto(List<SalarioContabil> registrosFinanceiros,
                                                         DataRow registroContabil, 
                                                         List<VencimentoDescontoMensal> vencDescMensal)
         {
@@ -208,7 +209,7 @@ namespace TransparenciaWindows.Services
 
         private static string PadronizarValor(string valor)
         {
-            var valorSeparado = valor.Split('.');
+            var valorSeparado = valor.Split(',');
             if (valorSeparado == null || valorSeparado.Length == 0) { return valor; }
             if (valorSeparado.Length == 1) { return valor + ".00"; }
             if (valorSeparado[1].Length == 1) { return valor + "0"; }
