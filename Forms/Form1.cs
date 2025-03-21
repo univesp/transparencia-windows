@@ -16,10 +16,12 @@ namespace TransparenciaWindows
     {
         private StreamReader _planilhaMensal;
         private StreamReader _planilhaContabilidade;
+        private FacadeService.TiposArquivo _tipoArquivoEscolhido;
 
         public frmAplicacao()
         {
             InitializeComponent();
+            pnlArquivosDownload.Visible = false;
             webCabecalho.DocumentText = @"
 <html>
 <head><link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css' crossorigin='anonymous' /></head>
@@ -49,7 +51,7 @@ namespace TransparenciaWindows
                         _planilhaMensal = new StreamReader(dialogo.FileName);
                         lblCaminhoPlanilhaMensal.Text = dialogo.FileName;
                         MessageBox.Show("Planilha mensal carregada com sucesso.");
-                    } 
+                    }
                     catch (IOException ex)
                     {
                         MessageBox.Show("Erro ao carregar a planilha; verifique se ela não está aberta em seu computador.");
@@ -83,24 +85,60 @@ namespace TransparenciaWindows
             if (opcaoEscolhida == null)
             {
                 MessageBox.Show("Selecione o tipo de arquivo a ser gerado.");
-            } else
+            }
+            else
             {
+                switch (opcaoEscolhida.ToString())
+                {
+                    case "TXT do Portal da Transparência":
+                        _tipoArquivoEscolhido = FacadeService.TiposArquivo.TXTPortal;
+                        break;
+                    case "TXT do IAMSPE":
+                        _tipoArquivoEscolhido = FacadeService.TiposArquivo.TXTIamspe;
+                        break;
+                    case "XML de Cadastro de Verbas Remuneratórias (AUDESP)":
+                        _tipoArquivoEscolhido = FacadeService.TiposArquivo.XMLVerbasAUDESP;
+                        break;
+                    case "XML de Folha Ordinária (AUDESP)":
+                        _tipoArquivoEscolhido = FacadeService.TiposArquivo.XMLFolhaAUDESP;
+                        break;
+                    case "XML de Pagamento da Folha Ordinária (AUDESP)":
+                        _tipoArquivoEscolhido = FacadeService.TiposArquivo.XMLPagamentoAUDESP;
+                        break;
+                    case "XML de Resumo Mensal da Folha Ordinária (AUDESP)":
+                        _tipoArquivoEscolhido = FacadeService.TiposArquivo.XMLResumoAUDESP;
+                        break;
+                    default:
+                        break;
+                }
+
                 if (_planilhaMensal != null)
                 {
-                    FacadeService.Converter(opcaoEscolhida.ToString(), 
-                                            _planilhaMensal.BaseStream, 
+                    FacadeService.Converter(_tipoArquivoEscolhido,
+                                            _planilhaMensal.BaseStream,
                                             _planilhaContabilidade != null ? _planilhaContabilidade.BaseStream : null);
-                } else
+                    pnlArquivosDownload.Visible = true;
+                }
+                else
                 {
                     MessageBox.Show("A planilha mensal deve ser carregada!");
                 }
             };
         }
-
-        private void btnReiniciar_Click(object sender, EventArgs e)
+        private void lnkReiniciarAplicacao_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Application.Restart();
             Environment.Exit(0);
+        }
+
+        private void lnkArquivoGerado_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            FacadeService.BaixarArquivoGerado(_tipoArquivoEscolhido);
+        }
+
+        private void lnkPlanilhaMesclada_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            FacadeService.BaixarPlanilhaMesclada();
         }
     }
 }
