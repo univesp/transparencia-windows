@@ -76,7 +76,7 @@ namespace TransparenciaWindows.Services
                 linhaFormatada += $"{registro[16]}".Split(' ')[0].Trim().PadRightSubstring(1); // [Q]
                 // DATA_NASC n8
                 linhaFormatada += $"{registro[14]}".Trim().PadRightSubstring(8); // [O]
-                                                                                 // POP_CAR a2
+                // POP_CAR a2
                 linhaFormatada += $"{registro[164]}".Trim().PadRightSubstring(2); // [FJ]
                 // COD_SITUA_FUNCIO a2
                 linhaFormatada += $"{registro[165]}".Split('=')[0].Trim().PadRightSubstring(2); // [FK]
@@ -168,61 +168,61 @@ namespace TransparenciaWindows.Services
                 // VD_IAMSPE_BENEFI_070119 n15
                 if ($"{registro[184]}".Trim() != "")
                 {
-                    linhaFormatada += $"{TratarVirgulaMoeda(registro[184].ToString())}".Trim().PadRightSubstring(15); // [GD]    
+                    linhaFormatada += $"{TratarVirgulaMoeda(registro[184].ToString())}-".Trim().PadLeftSubstring(15, ' '); // [GD]    
                 }
                 else
                 {
-                    linhaFormatada += "".PadLeftSubstring(15);
+                    linhaFormatada += "".PadLeftSubstring(15, ' ');
                 }
 
                 // VD_IAMSPE_AGRESF_070120 n15
                 if ($"{registro[185]}".Trim() != "")
                 {
-                    linhaFormatada += $"{TratarVirgulaMoeda(registro[185].ToString())}".Trim().PadRightSubstring(15); // [GE]
+                    linhaFormatada += $"{TratarVirgulaMoeda(registro[185].ToString())}-".Trim().PadLeftSubstring(15, ' '); // [GE]
                 }
                 else
                 {
-                    linhaFormatada += "".PadLeftSubstring(15);
+                    linhaFormatada += "".PadLeftSubstring(15, ' ');
                 }
 
                 // VD_IAMSPE_BENESF_070121 n15
                 if ($"{registro[186]}".Trim() != "")
                 {
-                    linhaFormatada += $"{TratarVirgulaMoeda(registro[186].ToString())}".Trim().PadRightSubstring(15); // [GF]
+                    linhaFormatada += $"{TratarVirgulaMoeda(registro[186].ToString())}-".Trim().PadLeftSubstring(15, ' '); // [GF]
                 }
                 else
                 {
-                    linhaFormatada += "".PadLeftSubstring(15);
+                    linhaFormatada += "".PadLeftSubstring(15, ' ');
                 }
 
                 // VD_IAMSPE_13SAL_070122 n15
                 if ($"{registro[187]}".Trim() != "")
                 {
-                    linhaFormatada += $"{TratarVirgulaMoeda(registro[187].ToString())}".Trim().PadRightSubstring(15); // [GG]
+                    linhaFormatada += $"{TratarVirgulaMoeda(registro[187].ToString())}-".Trim().PadLeftSubstring(15, ' '); // [GG]
                 }
                 else
                 {
-                    linhaFormatada += "".PadLeftSubstring(15);
+                    linhaFormatada += "".PadLeftSubstring(15, ' ');
                 }
 
                 // VD_IAMSPE_AGRE13_070123 n15
                 if ($"{registro[188]}".Trim() != "")
                 {
-                    linhaFormatada += $"{TratarVirgulaMoeda(registro[188].ToString())}".Trim().PadRightSubstring(15); // [GH]
+                    linhaFormatada += $"{TratarVirgulaMoeda(registro[188].ToString())}-".Trim().PadLeftSubstring(15, ' '); // [GH]
                 }
                 else
                 {
-                    linhaFormatada += "".PadLeftSubstring(15);
+                    linhaFormatada += "".PadLeftSubstring(15, ' ');
                 }
 
                 // VD_IAMSPE_BENE13_070124 n15
                 if ($"{registro[189]}".Trim() != "")
                 {
-                    linhaFormatada += $"{TratarVirgulaMoeda(registro[189].ToString())}".Trim().PadRightSubstring(15); // [GI]
+                    linhaFormatada += $"{TratarVirgulaMoeda(registro[189].ToString())}-".Trim().PadLeftSubstring(15, ' '); // [GI]
                 }
                 else
                 {
-                    linhaFormatada += "".PadLeftSubstring(15);
+                    linhaFormatada += "".PadLeftSubstring(15, ' ');
                 }
 
                 // VD_IAMSPE_DEPENT_070641 n15
@@ -234,11 +234,11 @@ namespace TransparenciaWindows.Services
                 // VD_IAMSPE_070037 n15
                 if ($"{registro[168]}".Trim() != "")
                 {
-                    linhaFormatada += $"{TratarVirgulaMoeda(registro[168].ToString())}".Trim().PadRightSubstring(15); // [GL]
+                    linhaFormatada += $"{TratarVirgulaMoeda(registro[168].ToString())}-".Trim().PadLeftSubstring(15, ' '); // [GL]
                 }
                 else
                 {
-                    linhaFormatada += "".PadLeftSubstring(15);
+                    linhaFormatada += "".PadLeftSubstring(15, ' ');
                 }
 
                 // VD_IAMSPE_907100 n15
@@ -253,11 +253,11 @@ namespace TransparenciaWindows.Services
                 // VD_IAMSPE_070006 n15
                 if ($"{registro[196]}".Trim() != "")
                 {
-                    linhaFormatada += $"{TratarVirgulaMoeda(registro[196].ToString())}".Trim().PadRightSubstring(15); // [GP]
+                    linhaFormatada += $"{TratarVirgulaMoeda(registro[196].ToString())}-".Trim().PadLeftSubstring(15, ' '); // [GP]
                 }
                 else
                 {
-                    linhaFormatada += "".PadLeftSubstring(15);
+                    linhaFormatada += "".PadLeftSubstring(15, ' ');
                 }
 
                 // VD_IAMSPE_000510 n15
@@ -290,11 +290,11 @@ namespace TransparenciaWindows.Services
                 // VD_IAMSPE_070126 n15
                 if ($"{registro[167]}".Trim() != "")
                 {
-                    linhaFormatada += $"{TratarVirgulaMoeda(registro[167].ToString())}".Trim().PadRightSubstring(15); // [GW]
+                    linhaFormatada += $"{TratarVirgulaMoeda(registro[167].ToString())}-".Trim().PadLeftSubstring(15, ' '); // [GW]
                 }
                 else
                 {
-                    linhaFormatada += "".PadLeftSubstring(15);
+                    linhaFormatada += "".PadLeftSubstring(15, ' ');
                 }
 
                 // VD_IAMSPE_SPPREV_070127 n15

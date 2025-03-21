@@ -90,7 +90,7 @@ namespace TransparenciaWindows.Services
 
                     // Valor
                     float.TryParse($"{registroFinanceiro[index+1]}", out float tryValor);
-                    var valor = $"{tryValor / 100}";
+                    var valor = $"{tryValor / 100}".Trim().Replace(',','.');
 
                     /* Espécie
                         AUDESP: 1 - Desconto,2 - Vencimento

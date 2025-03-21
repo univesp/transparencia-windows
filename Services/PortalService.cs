@@ -77,7 +77,7 @@ namespace TransparenciaWindows.Services
             linhaFormatada += $"{totalBruto}".PadLeftSubstring(15,'0'); /* [M] Z 15 */
             linhaFormatada += $"{totalDescontos}".PadLeftSubstring(15,'0'); /* [N] Z 15 */
             linhaFormatada += $"{totalLiquido}".PadLeftSubstring(15,'0'); /* [N] Z 15 */
-            linhaFormatada += $"{(abas[1].Rows.Count)}".PadLeftSubstring(11, '0'); /* [O] Z 11 */
+            linhaFormatada += $"{(abas[1].Rows.Count - 1)}".PadLeftSubstring(11, '0'); /* [O] Z 11 */
             linhaFormatada += $"{totalRegistros}".PadLeftSubstring(11,'0'); /* [P] Z 11 */
             linhaFormatada += "".PadRightSubstring(552); /* [Q] C 553 */
             linhaFormatada += "\n";

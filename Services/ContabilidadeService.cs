@@ -121,7 +121,7 @@ namespace TransparenciaWindows.Services
                 if (RemoverFinalPontoZero(ultimoCodigo.Trim()) != RemoverFinalPontoZero($"{registro[ColCodigo]}".Trim()))
                 {
                     ultimoCodigo = RemoverFinalPontoZero($"{registro[ColCodigo]}".Trim());
-                    registrosFinanceiros.Add(new SalarioContabil(ultimoCodigo, $"{registro[5]}".Trim(), new List<Verba>()));
+                    registrosFinanceiros.Add(new SalarioContabil(ultimoCodigo, $"{registro[11]}".Trim(), new List<Verba>()));
                 }
 
                 AdicionarVencimentoDesconto(registrosFinanceiros, registro, vencDescMensal);
@@ -219,7 +219,10 @@ namespace TransparenciaWindows.Services
 
         private static string RemoverFinalPontoZero(string valor)
         {
-            return valor.Replace(".0", "").Trim();
+            if (valor.EndsWith(".0") || valor.EndsWith(",0"))
+            {
+                return valor.Substring(0, valor.Length - 2);
+            } else { return valor; }
         }
 
         #endregion

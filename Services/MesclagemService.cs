@@ -71,10 +71,10 @@ namespace TransparenciaWindows.Services
                 {
                     if (valor != null && ((j >= 131 && j <= 133) || j == 160))
                     {
-                        abaPlanMesclada.Cell(i + 1, 131).Value = valor.VencBruto.Replace(".", "").Replace(",", "").Trim();
-                        abaPlanMesclada.Cell(i + 1, 132).Value = valor.Descontos.Replace(".", "").Replace(",", "").Trim();
-                        abaPlanMesclada.Cell(i + 1, 133).Value = valor.SalLiquido.Replace(".", "").Replace(",", "").Trim();
-                        abaPlanMesclada.Cell(i + 1, 160).Value = valor.SalLiquido.Replace(".", "").Replace(",", "").Trim();
+                        abaPlanMesclada.Cell(i + 1, 132).Value = valor.VencBruto.Replace(".", "").Replace(",", "").Trim();
+                        abaPlanMesclada.Cell(i + 1, 133).Value = valor.Descontos.Replace(".", "").Replace(",", "").Trim();
+                        abaPlanMesclada.Cell(i + 1, 134).Value = valor.SalLiquido.Replace(".", "").Replace(",", "").Trim();
+                        abaPlanMesclada.Cell(i + 1, 161).Value = valor.SalLiquido.Replace(".", "").Replace(",", "").Trim();
                     }
                     else
                     {
@@ -116,7 +116,7 @@ namespace TransparenciaWindows.Services
 
                     // os valores da planilha original não podem ter ponto ou vírgula
                     string valor = verba.Valor.Replace(".", "").Replace(",", "").Trim();
-                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 1).Value = salario.Codigo;
+                    abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 1).Value = verba.Codigo;
                     abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 2).Value = valor;
                     abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 3).Value = verba.Indicacao;
                     abaPlanMesclada.Cell(i + 1, indexColunasVariaveis + 4).Value = verba.DoMes;
