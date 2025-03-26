@@ -14,7 +14,7 @@ namespace TransparenciaWindows.Services
         // Constantes identificadoras da Univesp
         private const string Municipio = "7107";
         private const string Entidade = "11219";
-       
+
         #endregion
 
         #region Classes auxiliares
@@ -49,13 +49,26 @@ namespace TransparenciaWindows.Services
             public List<Lancamento> Lancamentos { get; set; }
         }
 
+        private class CargoFuncao {
+
+            public CargoFuncao(string codigo, string nome, string tipo)
+            {
+                Codigo = codigo;
+                Nome = nome;
+                Tipo = tipo;
+            }
+
+            public string Codigo { get; set; }
+            public string Nome { get; set; }
+            public string Tipo { get; set; }
+        }
         #endregion
 
         #region XML Folha
 
         public static void ConverterParaXMLFolha(IExcelDataReader planilha)
         {
-            MessageBox.Show("Convertendo para XML - Folha ordinária. Aguarde!", 
+            MessageBox.Show("Convertendo para XML - Folha ordinária. Aguarde!",
                             "Informação",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
@@ -63,7 +76,7 @@ namespace TransparenciaWindows.Services
             string diretorioBaseTemplates = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Templates\AUDESP");
             string diretorioBaseSaida = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Outputs");
 
-          
+
             // Leitura dos arquivos de template da AUDESP
             string templateFolha = File.ReadAllText(Path.Combine(diretorioBaseTemplates, "FolhaOrdinaria.txt"));
             string templateAgente = File.ReadAllText(Path.Combine(diretorioBaseTemplates, "Fragmentos", "AgentePublico.txt"));
@@ -72,6 +85,9 @@ namespace TransparenciaWindows.Services
             List<Financeiro> listaFinanceiro = new List<Financeiro>();
 
             var ds = planilha.AsDataSet();
+
+            List<CargoFuncao> cargosFuncoes = DefinirCargosFuncoes(ds.Tables[4]);
+
             var abaFinanceiro = ds.Tables[3];
             for (int i = 1; i < abaFinanceiro.Rows.Count; i++)
             {
@@ -89,26 +105,26 @@ namespace TransparenciaWindows.Services
                     if (codigo == 0) { break; }
 
                     // Valor
-                    float.TryParse($"{registroFinanceiro[index+1]}", out float tryValor);
-                    var valor = $"{tryValor / 100}".Trim().Replace(',','.');
+                    float.TryParse($"{registroFinanceiro[index + 1]}", out float tryValor);
+                    var valor = $"{tryValor / 100}".Trim().Replace(',', '.');
 
                     /* Espécie
                         AUDESP: 1 - Desconto,2 - Vencimento
                         Portal: D - Débito, C - Crédito ao funcionário
                         R - Redutor Salarial / Reposição (não utilizado),
                         S - Reposição de Desconto (não utilizado)*/
-                    var tipo = $"{registroFinanceiro[index+2]}".Split('-')[0].Trim();
+                    var tipo = $"{registroFinanceiro[index + 2]}".Split('-')[0].Trim();
                     tipo = tipo == "C" ? "2" : "1";
 
 
                     /* Natureza
                     AUDESP: 1 - Atrasado, 2 - Normal
                     Portal: M - Do Mês, A - Atrasado*/
-                    var natureza = $"{registroFinanceiro[index+3]}".Split('-')[0].Trim();
+                    var natureza = $"{registroFinanceiro[index + 3]}".Split('-')[0].Trim();
                     natureza = natureza == "A" ? "1" : "2";
 
                     // Código do tipo da verba
-                    var tipoVerba = $"{registroFinanceiro[index+5]}".Split('-')[0].Trim();
+                    var tipoVerba = $"{registroFinanceiro[index + 5]}".Split('-')[0].Trim();
 
                     index += 8; // incremento de 8 para pular para o próximo bloco de lançamentos
 
@@ -151,6 +167,8 @@ namespace TransparenciaWindows.Services
                 float.TryParse($"{registroPessoal[132]}", out float descontos);
                 float.TryParse($"{registroPessoal[133]}", out float remuneracaoLiquida);
 
+                string codigoCargoFuncao = DefinirTagCargo(cargosFuncoes, registroPessoal, "ap");
+
                 itens += templateAgente
                             .Replace("[CPF]", MontarCPF(registroPessoal))
                             .Replace("[NOME]", $"{registroPessoal[13]}".Trim())
@@ -159,14 +177,14 @@ namespace TransparenciaWindows.Services
                             .Replace("[CARGO_POLITICO]", $"{registroPessoal[148]}".Split('-')[0].Trim())
                             .Replace("[FUNCAO_GOVERNO]", $"{registroPessoal[149]}".Trim())
                             .Replace("[ESTAGIARIO]", $"{registroPessoal[150]}".Split('-')[0].Trim())
-                            .Replace("[CODIGO_CARGO]", $"{registroPessoal[45]}".Trim())
+                            .Replace("[CODIGO_CARGO_FUNCAO]", codigoCargoFuncao)
                             .Replace("[SITUACAO]", $"{registroPessoal[151]}".Split('-')[0].Trim())
                             .Replace("[REGIME_JURIDICO]", $"{registroPessoal[152]}".Split('-')[0].Trim())
                             .Replace("[AUTORIZACAO_TETO]", $"{registroPessoal[153]}".Split('-')[0].Trim())
                             .Replace("[REMUNERACAO_BRUTA]", DeFloatParaTexto(remuneracaoBruta))
                             .Replace("[DESCONTOS]", DeFloatParaTexto(descontos))
                             .Replace("[REMUNERACAO_LIQUIDA]", DeFloatParaTexto(remuneracaoLiquida))
-                            .Replace("[VERBAS]", remuneracao);                        
+                            .Replace("[VERBAS]", remuneracao);
 
             }
 
@@ -188,16 +206,16 @@ namespace TransparenciaWindows.Services
             {
                 saida.Write(templateFinal);
                 MessageBox.Show("Arquivo gerado com sucesso",
-                                "Informação", 
-                                MessageBoxButtons.OK, 
+                                "Informação",
+                                MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
             }
-                      
+
         }
 
         private static string DeFloatParaTexto(float celula)
         {
-            return (celula / 100).ToString("0.00").Replace(',','.');
+            return (celula / 100).ToString("0.00").Replace(',', '.');
         }
 
         private static string MontarCPF(DataRow registro)
@@ -212,14 +230,14 @@ namespace TransparenciaWindows.Services
         public static void ConverterParaXMLPagamentoFolha(IExcelDataReader planilha)
         {
             MessageBox.Show("Convertendo para XML - Pagamento Folha",
-                            "Informação", 
+                            "Informação",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
 
             string diretorioBaseTemplates = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Templates\AUDESP");
             string diretorioBaseSaida = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Outputs");
 
-           
+
             // Leitura dos arquivos de template da AUDESP
             string templatePagamentoFolha = File.ReadAllText(Path.Combine(diretorioBaseTemplates, "PagamentoFolha.txt"));
             string templateAgente = File.ReadAllText(Path.Combine(diretorioBaseTemplates, "Fragmentos", "AgenteFolha.txt"));
@@ -227,6 +245,9 @@ namespace TransparenciaWindows.Services
             string agentes = "";
 
             var ds = planilha.AsDataSet();
+
+            List<CargoFuncao> cargosFuncoes = DefinirCargosFuncoes(ds.Tables[4]);
+
             var abaPessoal = ds.Tables[2];
             for (int i = 1; i < abaPessoal.Rows.Count; i++)
             {
@@ -241,9 +262,12 @@ namespace TransparenciaWindows.Services
                 float.TryParse($"{registroPessoal[160]}", out float pagoCC);
                 float.TryParse($"{registroPessoal[161]}", out float pagoOutros);
 
+                // $"{registroPessoal[45]}".Trim()
+                string codigoCargoFuncao = DefinirTagCargo(cargosFuncoes, registroPessoal, "pfo");
+
                 agentes += templateAgente
                             .Replace("[CPF]", MontarCPF(registroPessoal))
-                            .Replace("[CODIGO_CARGO]", $"{registroPessoal[45]}".Trim())
+                            .Replace("[CODIGO_CARGO_FUNCAO]", codigoCargoFuncao)
                             .Replace("[FORMA_PAGAMENTO]", $"{registroPessoal[156]}".Split('-')[0].Trim())
                             .Replace("[NUMERO_BANCO]", $"{registroPessoal[157]}".Trim())
                             .Replace("[AGENCIA]", $"{registroPessoal[158]}".Trim())
@@ -271,11 +295,11 @@ namespace TransparenciaWindows.Services
             {
                 saida.Write(templateFinal);
                 MessageBox.Show("Arquivo gerado com sucesso",
-                                "Informação", 
-                                MessageBoxButtons.OK, 
+                                "Informação",
+                                MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
             }
-            
+
         }
 
         #endregion
@@ -293,7 +317,7 @@ namespace TransparenciaWindows.Services
             string diretorioBaseTemplates = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Templates\AUDESP");
             string diretorioBaseSaida = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Outputs");
 
-           
+
             // Leitura dos arquivos de template da AUDESP
             string templateResumo = File.ReadAllText(Path.Combine(diretorioBaseTemplates, "ResumoMensal.txt"));
 
@@ -326,16 +350,16 @@ namespace TransparenciaWindows.Services
                                     .Replace("[DATA_CRIACAO]", DateTime.Now.ToString("yyyy-MM-dd"))
                                     .Replace("[ANO_EXERCICIO]", $"{registroCabecalho[20]}".Trim())
                                     .Replace("[MES_EXERCICIO]", $"{registroCabecalho[21]}".Trim());
-            
+
             using (StreamWriter saida = new StreamWriter(Path.Combine(diretorioBaseSaida, "AUDESPResumoMensal.xml")))
             {
                 saida.Write(templateFinal);
-                MessageBox.Show("Arquivo gerado com sucesso", 
+                MessageBox.Show("Arquivo gerado com sucesso",
                                 "Informação",
-                                MessageBoxButtons.OK, 
+                                MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
             }
-            
+
         }
 
         #endregion
@@ -344,14 +368,14 @@ namespace TransparenciaWindows.Services
 
         public static void ConverterParaXMLVerbas(IExcelDataReader planilha)
         {
-            MessageBox.Show("Convertendo para XML - Verbas", 
+            MessageBox.Show("Convertendo para XML - Verbas",
                             "Informação",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
 
             string diretorioBaseTemplates = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Templates\AUDESP");
-            string diretorioBaseSaida = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Outputs");                     
-          
+            string diretorioBaseSaida = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Outputs");
+
             // Leitura dos arquivos de template da AUDESP
             string templateVerbas = File.ReadAllText(Path.Combine(diretorioBaseTemplates, "VerbasRemuneratorias.txt"));
 
@@ -367,7 +391,7 @@ namespace TransparenciaWindows.Services
 
                 itens += "\t<cvr:VerbasRemuneratorias>\n";
                 itens += "\t<cvr:Codigo>" + $"{registroVencimentos[5]}".Trim() + "</cvr:Codigo>\n";
-                itens += "\t<cvr:Nome>" + $"{ registroVencimentos[6]}".Trim() + "</cvr:Nome>\n";
+                itens += "\t<cvr:Nome>" + $"{registroVencimentos[6]}".Trim() + "</cvr:Nome>\n";
                 itens += "\t<cvr:EntraNoCalculoDoTetoConstitucional>" + entraCalculoTeto + "</cvr:EntraNoCalculoDoTetoConstitucional>\n";
                 itens += "\t</cvr:VerbasRemuneratorias>\n";
             }
@@ -382,16 +406,55 @@ namespace TransparenciaWindows.Services
                                     .Replace("[ANO_EXERCICIO]", $"{registroCabecalho[20]}".Trim())
                                     .Replace("[DATA_CRIACAO]", DateTime.Now.ToString("yyyy-MM-dd"))
                                     .Replace("[TIPO_DOCUMENTO]", "Cadastro de Verbas Remuneratórias");
-                                 
+
             using (StreamWriter saida = new StreamWriter(Path.Combine(diretorioBaseSaida, "AUDESPVerbas.xml")))
             {
                 saida.Write(templateFinal);
-                MessageBox.Show("Arquivo gerado com sucesso", 
-                                "Informação", 
+                MessageBox.Show("Arquivo gerado com sucesso",
+                                "Informação",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
             }
-            
+
+        }
+
+        #endregion
+
+        #region Métodos auxiliares
+
+        private static List<CargoFuncao> DefinirCargosFuncoes(DataTable aba)
+        {
+            List<CargoFuncao> cargosFuncoes = new List<CargoFuncao>();
+
+            for (int i = 1; i < aba.Rows.Count; i++)
+            {
+                DataRow registro = aba.Rows[i];
+
+                cargosFuncoes.Add(
+                    new CargoFuncao(
+                        $"{registro[5]}".Trim(),
+                        $"{registro[6]}".Trim(),
+                        $"{registro[7]}".Trim()
+                    )
+                );
+            }
+
+            return cargosFuncoes;
+        }
+
+        private static string DefinirTagCargo(List<CargoFuncao> cargosFuncoes, DataRow registro, string prefixo)
+        {
+            // por padrão assume-se que o funcionário é permanente e a tag é <pfo:CodigoCargo>
+            string codigoCargoFuncao = $"<{prefixo}:CodigoCargo>{registro[45].ToString().Trim()}</{prefixo}:CodigoCargo>";
+
+            CargoFuncao cargoFuncaoTemp = cargosFuncoes.Find(cf => $"{cf.Codigo}" == $"{registro[45]}".Trim());
+            if (cargoFuncaoTemp != null && cargoFuncaoTemp.Tipo == "Temporário")
+            {
+                // a menos que tenha sido especificado que o funcionário é temporário, aí é <pfo:CodigoFuncao>
+                codigoCargoFuncao = $"<{prefixo}:CodigoFuncao>{registro[45].ToString().Trim()}</{prefixo}:CodigoFuncao>";
+            }
+
+            return codigoCargoFuncao;
         }
 
         #endregion

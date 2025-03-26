@@ -4,7 +4,7 @@
   </pfo:CPF>
   <pfo:MunicipioLotacao>[MUNICIPIO]</pfo:MunicipioLotacao>
   <pfo:EntidadeLotacao>[ENTIDADE]</pfo:EntidadeLotacao>
-  <pfo:CodigoCargo>[CODIGO_CARGO]</pfo:CodigoCargo>
+  [CODIGO_CARGO_FUNCAO]  
   <pfo:formaPagamento>[FORMA_PAGAMENTO]</pfo:formaPagamento>
   <pfo:numeroBanco>[NUMERO_BANCO]</pfo:numeroBanco>
   <pfo:agencia>[AGENCIA]</pfo:agencia>

@@ -6,8 +6,8 @@
   <ap:MunicipioLotacao>[MUNICIPIO]</ap:MunicipioLotacao>
   <ap:EntidadeLotacao>[ENTIDADE]</ap:EntidadeLotacao>
   <ap:CargoPolitico>[CARGO_POLITICO]</ap:CargoPolitico>
-  <ap:FuncaoGoverno>[FUNCAO_GOVERNO]</ap:FuncaoGoverno>
-  <ap:CodigoCargo>[CODIGO_CARGO]</ap:CodigoCargo>
+  <ap:FuncaoGoverno>[FUNCAO_GOVERNO]</ap:FuncaoGoverno>  
+  [CODIGO_CARGO_FUNCAO]
   <ap:Situacao>[SITUACAO]</ap:Situacao>
   <ap:RegimeJuridico>[REGIME_JURIDICO]</ap:RegimeJuridico>
   <ap:PossuiAutorizRecebAcimaTeto>[AUTORIZACAO_TETO]</ap:PossuiAutorizRecebAcimaTeto>
